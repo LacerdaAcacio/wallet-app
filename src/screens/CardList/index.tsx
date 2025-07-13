@@ -75,6 +75,7 @@ const CardListScreen = () => {
                 isHidden={isHidden}
                 isStackTop={index === cards.length - 1}
                 onPress={() => handleCardPress(index)}
+                isAnyCardSelected={selectedIndex !== null}
               />
             );
           }}

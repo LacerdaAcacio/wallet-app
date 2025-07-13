@@ -15,5 +15,10 @@
 
 ### VERSÃO 1.0.3:
 
-1. FEATURE
+1. BUGFIX
     1.1 Ajustes na animação ao clicar em um cartão.
+
+### VERSÃO 1.0.4:
+
+1. BUGFIX
+    1.1 Ajustes no distanciamente entre cartões em CardList.

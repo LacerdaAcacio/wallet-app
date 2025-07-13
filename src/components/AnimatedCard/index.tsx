@@ -28,6 +28,7 @@ interface AnimatedCardProps {
   isHidden: boolean;
   isStackTop: boolean;
   onPress: () => void;
+  isAnyCardSelected: boolean;
 }
 
 const AnimatedCard: React.FC<AnimatedCardProps> = ({
@@ -38,6 +39,7 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
   isHidden,
   isStackTop,
   onPress,
+  isAnyCardSelected,
 }) => {
   const cardColor = index % 2 === 0 ? 'black' : 'green';
 
@@ -47,36 +49,34 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
 
   const animationConfig = {
     duration: 400,
-    easing: Easing.bezier(0.33, 1, 0.68, 1),
+    easing: Easing.bezier(0.25, 0.1, 0.25, 1),
   };
 
   useEffect(() => {
+    let targetY = 0;
+    let targetScale = 1;
+    let targetOpacity = 1;
+
     if (isFocused) {
-      // Anima para a posição de foco centralizada
-      translateY.value = withTiming(-hp('28%'), animationConfig);
-      scale.value = withTiming(1.1, animationConfig);
-      opacity.value = withTiming(1, animationConfig);
+      targetY = -hp('-15%');
     } else if (isBehind) {
-      // Anima para a parte de baixo, semi-visível e transparente
-      translateY.value = withTiming(hp('45%'), animationConfig);
-      scale.value = withTiming(0.9, animationConfig);
-      opacity.value = withTiming(0.5, animationConfig);
+      targetY = hp('65%');
+      targetOpacity = 0.5;
     } else if (isHidden) {
-      // Anima para fora da tela
-      translateY.value = withTiming(hp('100%'), animationConfig);
-      opacity.value = withTiming(0, animationConfig);
-    } else {
-      // Retorna para a posição padrão na pilha
-      translateY.value = withTiming(0, animationConfig);
-      scale.value = withTiming(1, animationConfig);
-      opacity.value = withTiming(1, animationConfig);
+      targetY = hp('100%');
+      targetOpacity = 0;
     }
+
+    translateY.value = withTiming(targetY, animationConfig);
+    scale.value = withTiming(targetScale, animationConfig);
+    opacity.value = withTiming(targetOpacity, animationConfig);
   }, [isFocused, isBehind, isHidden]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateY: translateY.value }, { scale: scale.value }],
+      position: isAnyCardSelected ? 'absolute' : 'relative',
       opacity: opacity.value,
+      transform: [{ translateY: translateY.value }, { scale: scale.value }],
       zIndex: isFocused ? 10 : 0,
     };
   });
@@ -89,7 +89,7 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
             <CardType variant={cardColor}>
               {cardColor === 'black' ? 'Black Card' : 'Green Card'}
             </CardType>
-            {(isFocused || isStackTop) && (
+            {(isFocused || (isStackTop && !isAnyCardSelected)) && (
               <>
                 <CardHolder variant={cardColor}>{card.name}</CardHolder>
                 <CardNumberContainer>
