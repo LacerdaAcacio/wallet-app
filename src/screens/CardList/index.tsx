@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, ActivityIndicator, FlatList, Pressable, Alert } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, Alert } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useCards } from '../../hooks/useCards';
 import AnimatedCard from '../../components/AnimatedCard';
 import {
@@ -9,14 +10,16 @@ import {
   AddButton,
   ActionText,
   BottomButtonContainer,
+  ContentContainer,
+  ListWrapper,
+  OverlayContainer,
 } from './styles';
 import { useTheme } from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/types';
 import Button from '../../components/Button';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 type CardListNavigationProp = StackNavigationProp<RootStackParamList, 'CardList'>;
 
@@ -26,17 +29,34 @@ const CardListScreen = () => {
   const theme = useTheme();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const handleAddPress = () => {
-    navigation.navigate('AddCard');
-  };
+  const listOpacity = useSharedValue(1);
 
-  const handleCardPress = (index: number) => {
-    if (selectedIndex === index || (selectedIndex !== null && index === selectedIndex + 1)) {
-      setSelectedIndex(null);
-    } else {
-      setSelectedIndex(index);
+  const handleAddPress = () => navigation.navigate('AddCard');
+  const handleCardPress = (index: number) =>
+    setSelectedIndex(prevIndex => (prevIndex === index ? null : index));
+  const resetSelection = () => setSelectedIndex(null);
+
+  const handleUseThisCardPress = () => {
+    if (cards && cards.length > 0) {
+      setSelectedIndex(cards.length - 1);
     }
   };
+
+  const listAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: listOpacity.value,
+  }));
+
+  useFocusEffect(
+    React.useCallback(() => {
+      listOpacity.value = withTiming(selectedIndex !== null ? 0 : 1);
+    }, [selectedIndex]),
+  );
+
+  const focusedCard = selectedIndex !== null ? cards?.[selectedIndex] : null;
+  const behindCard =
+    selectedIndex !== null && cards && selectedIndex < cards.length - 1
+      ? cards[selectedIndex + 1]
+      : null;
 
   if (isLoadingCards) {
     return (
@@ -58,36 +78,45 @@ const CardListScreen = () => {
         </AddButton>
       </HeaderWrapper>
 
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={cards}
-          renderItem={({ item, index }) => {
-            const isFocused = selectedIndex === index;
-            const isBehind = selectedIndex !== null && index === selectedIndex + 1;
-            const isHidden = selectedIndex !== null && !isFocused && !isBehind;
+      <ContentContainer>
+        <Animated.View style={[{ width: '100%', flex: 1 }, listAnimatedStyle]}>
+          <ListWrapper>
+            <FlatList
+              data={cards}
+              renderItem={({ item, index }) => (
+                <AnimatedCard
+                  card={item}
+                  index={index}
+                  isStackTop={index === (cards?.length ?? 0) - 1}
+                  onPress={() => handleCardPress(index)}
+                  isAnyCardSelected={selectedIndex !== null}
+                />
+              )}
+              keyExtractor={item => item.id}
+              contentContainerStyle={{ alignItems: 'center', paddingTop: 20, paddingBottom: 20 }}
+            />
+          </ListWrapper>
+        </Animated.View>
 
-            return (
+        {selectedIndex !== null && focusedCard && (
+          <OverlayContainer>
+            {behindCard && (
               <AnimatedCard
-                card={item}
-                index={index}
-                isFocused={isFocused}
-                isBehind={isBehind}
-                isHidden={isHidden}
-                isStackTop={index === cards.length - 1}
-                onPress={() => handleCardPress(index)}
-                isAnyCardSelected={selectedIndex !== null}
+                card={behindCard}
+                index={selectedIndex + 1}
+                isBehind={true}
+                onPress={resetSelection}
               />
-            );
-          }}
-          keyExtractor={item => item.id}
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingTop: 20,
-            paddingBottom: 20,
-          }}
-          scrollEnabled={selectedIndex === null}
-        />
-      </View>
+            )}
+            <AnimatedCard
+              card={focusedCard}
+              index={selectedIndex}
+              isFocused={true}
+              onPress={resetSelection}
+            />
+          </OverlayContainer>
+        )}
+      </ContentContainer>
 
       <BottomButtonContainer>
         {selectedIndex !== null ? (
@@ -96,7 +125,9 @@ const CardListScreen = () => {
             onPress={() => Alert.alert('Ação', 'Botão de pagamento clicado!')}
           />
         ) : (
-          <ActionText>Selecione um cartão</ActionText>
+          <Pressable onPress={handleUseThisCardPress}>
+            <ActionText>usar este cartão</ActionText>
+          </Pressable>
         )}
       </BottomButtonContainer>
     </CardListContainer>

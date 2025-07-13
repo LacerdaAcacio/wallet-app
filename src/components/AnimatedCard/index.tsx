@@ -23,26 +23,23 @@ import { Card } from '../../@types/card';
 interface AnimatedCardProps {
   card: Card;
   index: number;
-  isFocused: boolean;
-  isBehind: boolean;
-  isHidden: boolean;
-  isStackTop: boolean;
-  onPress: () => void;
-  isAnyCardSelected: boolean;
+  isFocused?: boolean;
+  isBehind?: boolean;
+  onPress?: () => void;
+  isStackTop?: boolean;
+  isAnyCardSelected?: boolean;
 }
 
 const AnimatedCard: React.FC<AnimatedCardProps> = ({
   card,
   index,
-  isFocused,
-  isBehind,
-  isHidden,
-  isStackTop,
+  isFocused = false,
+  isBehind = false,
   onPress,
+  isStackTop,
   isAnyCardSelected,
 }) => {
   const cardColor = index % 2 === 0 ? 'black' : 'green';
-
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
@@ -58,25 +55,22 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
     let targetOpacity = 1;
 
     if (isFocused) {
-      targetY = -hp('-15%');
+      targetY = -hp('10%');
     } else if (isBehind) {
-      targetY = hp('65%');
+      targetY = hp('35%');
       targetOpacity = 0.5;
-    } else if (isHidden) {
-      targetY = hp('100%');
-      targetOpacity = 0;
     }
 
     translateY.value = withTiming(targetY, animationConfig);
     scale.value = withTiming(targetScale, animationConfig);
     opacity.value = withTiming(targetOpacity, animationConfig);
-  }, [isFocused, isBehind, isHidden]);
+  }, [isFocused, isBehind]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      position: isAnyCardSelected ? 'absolute' : 'relative',
-      opacity: opacity.value,
+      position: isFocused || isBehind ? 'absolute' : 'relative',
       transform: [{ translateY: translateY.value }, { scale: scale.value }],
+      opacity: opacity.value,
       zIndex: isFocused ? 10 : 0,
     };
   });

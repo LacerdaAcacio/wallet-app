@@ -22,3 +22,8 @@
 
 1. BUGFIX
     1.1 Ajustes no distanciamente entre cartões em CardList.
+
+### VERSÃO 1.0.5:
+
+1. BUGFIX
+    1.1 Ajustes no dimensionamento dos componentes de CardList.
