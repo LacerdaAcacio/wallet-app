@@ -6,18 +6,66 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "jest",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "api": "npx json-server --watch db.json --host 0.0.0.0",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "@react-navigation/native": "^7.1.14",
+    "@react-navigation/stack": "^7.4.2",
+    "@reduxjs/toolkit": "^2.8.2",
+    "@tanstack/react-query": "^5.83.0",
+    "axios": "^1.10.0",
     "expo": "~53.0.17",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
-    "react-native": "0.79.5"
+    "react-dom": "19.0.0",
+    "react-hook-form": "^7.60.0",
+    "react-native": "0.79.5",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-mask-text": "^0.15.0",
+    "react-native-responsive-screen": "^1.4.2",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "react-native-status-bar-height": "^2.6.0",
+    "react-redux": "^9.2.0",
+    "styled-components": "^6.1.19",
+    "zod": "^4.0.5",
+    "react-native-reanimated": "~3.17.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@react-native-community/eslint-config": "^3.2.0",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.2.0",
+    "@types/jest": "^30.0.0",
     "@types/react": "~19.0.10",
+    "@types/styled-components-react-native": "^5.2.5",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "husky": "^8.0.0",
+    "jest": "^29.7.0",
+    "jest-expo": "^53.0.9",
+    "json-server": "^1.0.0-beta.3",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2",
+    "react-native-dotenv": "^3.4.11",
+    "react-test-renderer": "19.0.0",
     "typescript": "~5.8.3"
+  },
+  "overrides": {
+    "react": "19.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "private": true
 }
