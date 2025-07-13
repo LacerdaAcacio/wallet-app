@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, FlatList } from 'react-native';
 import { useCards } from '../../hooks/useCards';
 import AnimatedCard from '../../components/AnimatedCard';
 import {
   CardListContainer,
-  Header,
+  HeaderWrapper,
   HeaderTitle,
   AddButton,
-  CardsStackContainer,
   ActionText,
   BottomButtonContainer,
 } from './styles';
@@ -26,17 +25,13 @@ const CardListScreen = () => {
   const theme = useTheme();
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-  const handleCardPress = (cardId: string) => {
-    setSelectedCardId(prevId => (prevId === cardId ? null : cardId));
-  };
-
   const handleAddPress = () => {
     navigation.navigate('AddCard');
   };
 
   if (isLoadingCards) {
     return (
-      <CardListContainer>
+      <CardListContainer style={{ justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color={theme.colors.primaryButton} />
       </CardListContainer>
     );
@@ -44,26 +39,24 @@ const CardListScreen = () => {
 
   return (
     <CardListContainer>
-      <Header>
+      <HeaderWrapper>
         <View style={{ width: 30 }} />
         <HeaderTitle>Meus Cartões</HeaderTitle>
         <AddButton onPress={handleAddPress}>
           <Ionicons name="add-circle-outline" size={30} color={theme.colors.primaryButton} />
         </AddButton>
-      </Header>
+      </HeaderWrapper>
 
-      <CardsStackContainer>
-        {cards?.map((card, index) => (
-          <AnimatedCard
-            key={card.id}
-            card={card}
-            index={index}
-            totalCards={cards.length}
-            selectedCardId={selectedCardId}
-            onPress={() => handleCardPress(card.id)}
-          />
-        ))}
-      </CardsStackContainer>
+      <FlatList
+        data={cards}
+        renderItem={({ item, index }) => <AnimatedCard card={item} index={index} />}
+        keyExtractor={item => item.id}
+        contentContainerStyle={{
+          alignItems: 'center',
+          paddingTop: 20,
+          paddingBottom: 20,
+        }}
+      />
 
       <BottomButtonContainer>
         {selectedCardId ? (

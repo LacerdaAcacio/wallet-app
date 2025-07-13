@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import {
-  widthPercentageToDP as wp,
   heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
@@ -10,7 +10,7 @@ export const CardListContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.backgroundDark};
 `;
 
-export const Header = styled.View`
+export const HeaderWrapper = styled.View`
   width: 100%;
   padding-top: ${getStatusBarHeight() + 20}px;
   padding-bottom: 20px;
@@ -30,12 +30,6 @@ export const HeaderTitle = styled.Text`
 `;
 
 export const AddButton = styled.TouchableOpacity``;
-
-export const CardsStackContainer = styled.View`
-  flex: 1;
-  align-items: center;
-  margin-top: ${hp('15%')}px;
-`;
 
 export const ActionText = styled.Text`
   font-size: ${({ theme }) => theme.fontSizes.body};

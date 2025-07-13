@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { Pressable } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import React from 'react';
+import { Pressable, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import {
   CardContainer,
   CardType,
@@ -15,55 +15,14 @@ import { Card } from '../../@types/card';
 interface AnimatedCardProps {
   card: Card;
   index: number;
-  totalCards: number;
-  selectedCardId: string | null;
-  onPress: () => void;
 }
 
-const AnimatedCard: React.FC<AnimatedCardProps> = ({
-  card,
-  index,
-  totalCards,
-  selectedCardId,
-  onPress,
-}) => {
-  const translateY = useSharedValue(0);
-  const scale = useSharedValue(1);
-  const opacity = useSharedValue(1);
-
-  const isSelected = selectedCardId === card.id;
-  const isUnselected = selectedCardId !== null && !isSelected;
-
-  useEffect(() => {
-    if (isSelected) {
-      translateY.value = withTiming(-(index * 40));
-      scale.value = withTiming(1.1, { duration: 250 });
-      opacity.value = withTiming(1);
-    } else if (isUnselected) {
-      translateY.value = withTiming(totalCards * 60);
-      scale.value = withTiming(0.9);
-      opacity.value = withTiming(0.5);
-    } else {
-      translateY.value = withTiming(-(index * (180 - 40)));
-      scale.value = withTiming(1 - index * 0.05);
-      opacity.value = withTiming(1);
-    }
-  }, [selectedCardId, card.id, index, totalCards]);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      position: 'absolute',
-      zIndex: totalCards - index,
-      opacity: opacity.value,
-      transform: [{ translateY: translateY.value }, { scale: scale.value }],
-    };
-  });
-
+const AnimatedCard: React.FC<AnimatedCardProps> = ({ card, index }) => {
   const cardColor = index % 2 === 0 ? 'black' : 'green';
 
   return (
-    <Animated.View style={animatedStyle}>
-      <Pressable onPress={onPress}>
+    <View style={{ marginBottom: -hp('20%') }}>
+      <Pressable>
         <CardContainer variant={cardColor}>
           <CardType variant={cardColor}>
             {cardColor === 'black' ? 'Black Card' : 'Green Card'}
@@ -80,7 +39,7 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
           </CardInfoRow>
         </CardContainer>
       </Pressable>
-    </Animated.View>
+    </View>
   );
 };
 
