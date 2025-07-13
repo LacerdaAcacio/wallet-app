@@ -8,6 +8,12 @@ interface CardStyleProps {
   variant?: 'black' | 'green';
 }
 
+export const CardWrapper = styled.View`
+  margin-bottom: -${hp('20%')}px;
+  align-items: center;
+  width: 100%;
+`;
+
 export const CardContainer = styled.View<CardStyleProps>`
   width: ${wp('85%')}px;
   height: ${hp('25%')}px;

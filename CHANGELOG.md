@@ -2,7 +2,13 @@
 
 ### VERSÃO 1.0.1:
 
-1. Ajuste no layout de CardList: 
-    - Distanciamento dos cards;
-    - Impedir que os cards sobreponham o header.
+1. BUGFIX
+    1.1 Ajuste no layout de CardList: 
+        - Distanciamento dos cards;
+        - Impedir que os cards sobreponham o header.
 
+### VERSÃO 1.0.2:
+
+1. FEATURE
+    1.1 Adicionado prop isStackTop;
+    1.2 Adicionado animação ao selecionar um cartão.

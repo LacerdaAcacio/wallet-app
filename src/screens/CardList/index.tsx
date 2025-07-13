@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ActivityIndicator, FlatList } from 'react-native';
+import { View, ActivityIndicator, FlatList, Pressable, Alert } from 'react-native';
 import { useCards } from '../../hooks/useCards';
 import AnimatedCard from '../../components/AnimatedCard';
 import {
@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/types';
 import Button from '../../components/Button';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 type CardListNavigationProp = StackNavigationProp<RootStackParamList, 'CardList'>;
 
@@ -23,10 +24,14 @@ const CardListScreen = () => {
   const navigation = useNavigation<CardListNavigationProp>();
   const { cards, isLoadingCards } = useCards();
   const theme = useTheme();
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const handleAddPress = () => {
     navigation.navigate('AddCard');
+  };
+
+  const handleCardPress = (index: number) => {
+    setSelectedIndex(prevIndex => (prevIndex === index ? null : index));
   };
 
   if (isLoadingCards) {
@@ -40,7 +45,9 @@ const CardListScreen = () => {
   return (
     <CardListContainer>
       <HeaderWrapper>
-        <View style={{ width: 30 }} />
+        <Pressable onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={30} color={theme.colors.primaryButton} />
+        </Pressable>
         <HeaderTitle>Meus Cartões</HeaderTitle>
         <AddButton onPress={handleAddPress}>
           <Ionicons name="add-circle-outline" size={30} color={theme.colors.primaryButton} />
@@ -49,18 +56,29 @@ const CardListScreen = () => {
 
       <FlatList
         data={cards}
-        renderItem={({ item, index }) => <AnimatedCard card={item} index={index} />}
+        renderItem={({ item, index }) => (
+          <AnimatedCard
+            card={item}
+            index={index}
+            isStackTop={index === cards.length - 1}
+            isFocused={selectedIndex === index}
+            onPress={() => handleCardPress(index)}
+          />
+        )}
         keyExtractor={item => item.id}
         contentContainerStyle={{
           alignItems: 'center',
           paddingTop: 20,
-          paddingBottom: 20,
+          paddingBottom: hp('20%'),
         }}
       />
 
       <BottomButtonContainer>
-        {selectedCardId ? (
-          <Button title="Pagar com este cartão" onPress={() => {}} />
+        {selectedIndex !== null ? (
+          <Button
+            title="Pagar com este cartão"
+            onPress={() => Alert.alert('Ação', 'Botão de pagamento clicado!')}
+          />
         ) : (
           <ActionText>Selecione um cartão</ActionText>
         )}
