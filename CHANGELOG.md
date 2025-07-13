@@ -12,3 +12,8 @@
 1. FEATURE
     1.1 Adicionado prop isStackTop;
     1.2 Adicionado animação ao selecionar um cartão.
+
+### VERSÃO 1.0.3:
+
+1. FEATURE
+    1.1 Ajustes na animação ao clicar em um cartão.

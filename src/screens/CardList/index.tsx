@@ -31,7 +31,11 @@ const CardListScreen = () => {
   };
 
   const handleCardPress = (index: number) => {
-    setSelectedIndex(prevIndex => (prevIndex === index ? null : index));
+    if (selectedIndex === index || (selectedIndex !== null && index === selectedIndex + 1)) {
+      setSelectedIndex(null);
+    } else {
+      setSelectedIndex(index);
+    }
   };
 
   if (isLoadingCards) {
@@ -54,24 +58,35 @@ const CardListScreen = () => {
         </AddButton>
       </HeaderWrapper>
 
-      <FlatList
-        data={cards}
-        renderItem={({ item, index }) => (
-          <AnimatedCard
-            card={item}
-            index={index}
-            isStackTop={index === cards.length - 1}
-            isFocused={selectedIndex === index}
-            onPress={() => handleCardPress(index)}
-          />
-        )}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{
-          alignItems: 'center',
-          paddingTop: 20,
-          paddingBottom: hp('20%'),
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={cards}
+          renderItem={({ item, index }) => {
+            const isFocused = selectedIndex === index;
+            const isBehind = selectedIndex !== null && index === selectedIndex + 1;
+            const isHidden = selectedIndex !== null && !isFocused && !isBehind;
+
+            return (
+              <AnimatedCard
+                card={item}
+                index={index}
+                isFocused={isFocused}
+                isBehind={isBehind}
+                isHidden={isHidden}
+                isStackTop={index === cards.length - 1}
+                onPress={() => handleCardPress(index)}
+              />
+            );
+          }}
+          keyExtractor={item => item.id}
+          contentContainerStyle={{
+            alignItems: 'center',
+            paddingTop: 20,
+            paddingBottom: 20,
+          }}
+          scrollEnabled={selectedIndex === null}
+        />
+      </View>
 
       <BottomButtonContainer>
         {selectedIndex !== null ? (
