@@ -1,12 +1,22 @@
-import styled from 'styled-components/native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import React from 'react';
+import { ViewStyle, ImageSourcePropType } from 'react-native';
+import { DefaultContainer, ImageContainer } from './styles';
 
-const ScreenContainer = styled.View`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.backgroundDark};
-  justify-content: center;
-  align-items: center;
-  padding: 0 ${wp('4%')}px;
-`;
+interface ScreenContainerProps {
+  children: React.ReactNode;
+  style?: ViewStyle;
+  backgroundImage?: ImageSourcePropType;
+}
+
+const ScreenContainer: React.FC<ScreenContainerProps> = ({ children, backgroundImage }) => {
+  if (backgroundImage) {
+    return (
+      <ImageContainer source={backgroundImage} resizeMode="cover">
+        {children}
+      </ImageContainer>
+    );
+  }
+  return <DefaultContainer>{children}</DefaultContainer>;
+};
 
 export default ScreenContainer;

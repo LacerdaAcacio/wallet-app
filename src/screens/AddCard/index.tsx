@@ -33,10 +33,6 @@ import {
   sharedInputStyle,
 } from './styles';
 
-const AddCardContainer = styled(ScreenContainer)`
-  justify-content: flex-start;
-`;
-
 const StyledMaskedInput = styled(MaskedTextInput)`
   ${sharedInputStyle}
 `;
@@ -51,6 +47,8 @@ const AddCardScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation<AddCardScreenNavigationProp>();
   const { addCard, isAddingCard } = useCards();
+
+  const backgroundImage = require('../../assets/background.png');
 
   const {
     control,
@@ -75,14 +73,21 @@ const AddCardScreen = () => {
   };
 
   return (
-    <AddCardContainer>
+    <ScreenContainer backgroundImage={backgroundImage}>
       <Header title="cadastro" />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1, width: '100%', alignItems: 'center' }}>
+        style={{ flex: 1, width: '100%', alignItems: 'center' }}
+        // keyboardVerticalOffset={100}
+        >
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ alignItems: 'center', paddingTop: 20 }}>
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          >
           <MainTitle style={{ fontSize: theme.fontSizes.h3, marginBottom: 20 }}>
             Wallet Test
           </MainTitle>
@@ -169,9 +174,9 @@ const AddCardScreen = () => {
           <FormRowErrorContainer>
             <RowErrorText>{errors.expiry?.message || errors.cvv?.message}</RowErrorText>
           </FormRowErrorContainer>
-          <View style={{ marginTop: 20, marginBottom: 40 }}>
+          <View>
             <Button
-              title={isAddingCard ? 'Cadastrando...' : 'Avançar'}
+              title="avançar"
               onPress={handleSubmit(onSubmit)}
               disabled={!isValid || isAddingCard}
               style={{ opacity: isValid && !isAddingCard ? 1 : 0.5 }}
@@ -179,7 +184,7 @@ const AddCardScreen = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </AddCardContainer>
+    </ScreenContainer>
   );
 };
 

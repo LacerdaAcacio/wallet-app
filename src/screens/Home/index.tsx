@@ -10,9 +10,10 @@ type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const backgroundImage = require('../../assets/background.png');
 
   return (
-    <ScreenContainer>
+    <ScreenContainer backgroundImage={backgroundImage}>
       <MainTitle>Wallet Test</MainTitle>
       <Button title="meus cartões" onPress={() => navigation.navigate('CardList')} />
       <Button

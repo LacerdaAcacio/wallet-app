@@ -5,7 +5,7 @@ import * as S from './styles';
 import { useTheme } from 'styled-components/native';
 
 interface HeaderProps {
-  title: string;
+  title?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
       <S.BackButton onPress={handleGoBack}>
         <Ionicons name="arrow-back" size={floatFontSize} color={colors.primaryButton} />
       </S.BackButton>
-      <S.HeaderTitle>{title}</S.HeaderTitle>
+      <S.HeaderTitle>{title ?? ''}</S.HeaderTitle>
       <S.HeaderPlaceholder />
     </S.HeaderContainer>
   );

@@ -16,13 +16,14 @@ const AddCardSuccessScreen = () => {
   const navigation = useNavigation<SuccessScreenNavigationProp>();
   const route = useRoute<SuccessScreenRouteProp>();
   const { newCard } = route.params;
+  const backgroundImage = require('../../assets/background.png');
 
   const handleFinish = () => {
     navigation.navigate('CardList');
   };
 
   return (
-    <ScreenContainer>
+    <ScreenContainer backgroundImage={backgroundImage}>
       <Header title="cadastro" />
       <SuccessContainer>
         <MainTitle style={{ marginBottom: 10 }}>Wallet Test</MainTitle>
@@ -32,7 +33,7 @@ const AddCardSuccessScreen = () => {
           <CardText>Número: **** **** **** {newCard.number.slice(-4)}</CardText>
           <CardText>Validade: {newCard.expiry}</CardText>
         </CardPreview>
-        <Button title="Concluir" onPress={handleFinish} />
+        <Button title="avançar" onPress={handleFinish} />
       </SuccessContainer>
     </ScreenContainer>
   );

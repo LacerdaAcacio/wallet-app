@@ -16,14 +16,12 @@ export const HeaderContainer = styled.View`
 `;
 
 export const HeaderTitle = styled.Text`
+  flex: 1;
   color: ${({ theme }) => theme.colors.primaryButton};
   font-size: ${wp('5.5%')}px;
-  font-weight: bold;
-  position: absolute;
   left: 0;
   right: 0;
   text-align: center;
-  z-index: -1;
 `;
 
 export const BackButton = styled.TouchableOpacity`
