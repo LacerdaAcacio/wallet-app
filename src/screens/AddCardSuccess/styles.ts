@@ -1,6 +1,14 @@
 import styled from 'styled-components/native';
 import { MainTitle as MainTitleComponent } from '@/components';
 
+export const HeaderWrapper = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+`;
+
 export const SuccessContainer = styled.View`
   flex: 1;
   justify-content: center;
@@ -10,6 +18,7 @@ export const SuccessContainer = styled.View`
 
 export const AppTitle = styled(MainTitleComponent)`
   margin-bottom: ${({ theme }) => theme.spacing.small}px;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 export const SuccessMessage = styled(MainTitleComponent)`

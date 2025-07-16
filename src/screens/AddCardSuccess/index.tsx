@@ -10,7 +10,9 @@ const AddCardSuccessScreen = () => {
 
   return (
     <ScreenContainer backgroundImage={backgroundImage}>
-      <Header title={UI_STRINGS.addCardTitle} />
+      <S.HeaderWrapper>
+      <Header title='cadastro' />
+      </S.HeaderWrapper>
       <S.SuccessContainer>
         <S.AppTitle>{UI_STRINGS.appName}</S.AppTitle>
         <S.SuccessMessage>{UI_STRINGS.addCardSuccess}</S.SuccessMessage>
