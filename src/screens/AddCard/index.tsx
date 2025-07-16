@@ -74,21 +74,21 @@ const AddCardScreen = () => {
 
   return (
     <ScreenContainer backgroundImage={backgroundImage}>
-      <Header title="cadastro" />
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
+      <Header title="cadastro" withShadow />
+      </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1, width: '100%', alignItems: 'center' }}
-        // keyboardVerticalOffset={100}
-        >
+      >
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: 'center',
             alignItems: 'center',
-          }}
-          >
-          <MainTitle style={{ fontSize: theme.fontSizes.h3, marginBottom: 20 }}>
+          }}>
+          <MainTitle style={{ marginBottom: 20 }}>
             Wallet Test
           </MainTitle>
           <Controller

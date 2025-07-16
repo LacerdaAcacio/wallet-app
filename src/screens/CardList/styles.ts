@@ -5,22 +5,34 @@ import {
 } from 'react-native-responsive-screen';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
+const shadowStyles = {
+  elevation: 8,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.15,
+  shadowRadius: 6,
+};
+
 export const CardListContainer = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.backgroundDark};
+  overflow: 'visible';
 `;
 
-export const HeaderWrapper = styled.View`
+export const HeaderWrapper = styled.View.attrs({
+  style: shadowStyles,
+})`
   width: 100%;
   padding-top: ${getStatusBarHeight() + 20}px;
   padding-bottom: 20px;
   padding-horizontal: ${wp('5%')}px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
+  z-index: 1;
 `;
 
 export const HeaderTitle = styled.Text`

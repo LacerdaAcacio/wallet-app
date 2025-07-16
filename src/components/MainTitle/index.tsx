@@ -6,7 +6,7 @@ import {
 
 const MainTitle = styled.Text`
   color: ${({ theme }) => theme.colors.white};
-  font-size: ${wp('7%')}px;
+  font-size: ${wp('10%')}px;
   text-align: center;
   margin-bottom: ${hp('5%')}px;
 `;

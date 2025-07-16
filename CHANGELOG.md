@@ -3,7 +3,7 @@
 ### VERSÃO 1.0.1:
 
 1. BUGFIX
-    1.1 Ajuste no layout de CardList: 
+    1.1 Ajuste no layout de CardList:
         - Distanciamento dos cards;
         - Impedir que os cards sobreponham o header.
 
@@ -27,3 +27,8 @@
 
 1. BUGFIX
     1.1 Ajustes no dimensionamento dos componentes de CardList.
+
+### VERSÃO 2.0.0:
+
+1. FEATURE
+    1.1 Versão Release.

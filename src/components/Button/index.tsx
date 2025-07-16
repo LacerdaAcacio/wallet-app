@@ -11,7 +11,9 @@ interface CustomButtonProps extends TouchableOpacityProps {
 const Button: React.FC<CustomButtonProps> = ({ title, variant = 'primary', testID, ...rest }) => {
   return (
     <StyledButton variant={variant} testID={testID} {...rest}>
-      <ButtonText variant={variant}>{title}</ButtonText>
+      <ButtonText variant={variant} {...rest}>
+        {title}
+      </ButtonText>
     </StyledButton>
   );
 };

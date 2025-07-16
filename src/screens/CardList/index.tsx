@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, Alert } from 'react-native';
+import { FlatList, Pressable, Alert } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useCards } from '../../hooks/useCards';
 import AnimatedCard from '../../components/AnimatedCard';
 import {
   CardListContainer,
-  HeaderWrapper,
-  HeaderTitle,
   AddButton,
   ActionText,
   BottomButtonContainer,
@@ -20,6 +18,8 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/types';
 import Button from '../../components/Button';
+import Header from '../../components/Header';
+import { LoadingWallet } from '../Loading/Wallet';
 
 type CardListNavigationProp = StackNavigationProp<RootStackParamList, 'CardList'>;
 
@@ -46,6 +46,12 @@ const CardListScreen = () => {
     opacity: listOpacity.value,
   }));
 
+  const AddCardButton = (
+    <AddButton onPress={handleAddPress}>
+      <Ionicons name="add" size={30} color={theme.colors.primaryButton} />
+    </AddButton>
+  );
+
   useFocusEffect(
     React.useCallback(() => {
       listOpacity.value = withTiming(selectedIndex !== null ? 0 : 1);
@@ -59,24 +65,12 @@ const CardListScreen = () => {
       : null;
 
   if (isLoadingCards) {
-    return (
-      <CardListContainer style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color={theme.colors.primaryButton} />
-      </CardListContainer>
-    );
+    return <LoadingWallet />;
   }
 
   return (
     <CardListContainer>
-      <HeaderWrapper>
-        <Pressable onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={30} color={theme.colors.primaryButton} />
-        </Pressable>
-        <HeaderTitle>Meus Cartões</HeaderTitle>
-        <AddButton onPress={handleAddPress}>
-          <Ionicons name="add-circle-outline" size={30} color={theme.colors.primaryButton} />
-        </AddButton>
-      </HeaderWrapper>
+      <Header title="Wallet Test" variant="wallet" rightComponent={AddCardButton} />
 
       <ContentContainer>
         <Animated.View style={[{ width: '100%', flex: 1 }, listAnimatedStyle]}>

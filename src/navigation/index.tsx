@@ -13,6 +13,7 @@ const stackNavigatorOptions = {
   cardStyleInterpolator: (({ current: { progress } }: { current: { progress: any } }) => ({
     cardStyle: {
       opacity: progress,
+      overflow: 'visible',
     },
   })) as StackCardStyleInterpolator,
 };
