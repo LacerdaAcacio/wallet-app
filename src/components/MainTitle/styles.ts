@@ -9,5 +9,4 @@ export const TitleText = styled.Text`
   font-size: ${wp('10%')}px;
   text-align: center;
   margin-bottom: ${hp('5%')}px;
-  font-weight: bold;
 `;

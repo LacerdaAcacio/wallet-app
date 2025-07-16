@@ -30,7 +30,6 @@ export const StyledButton = styled.TouchableOpacity<StyleProps>`
 `;
 
 export const ButtonText = styled.Text<StyleProps>`
-  font-weight: bold;
   font-size: ${wp('4.5%')}px;
 
   color: ${({ theme, variant, disabled }) => {

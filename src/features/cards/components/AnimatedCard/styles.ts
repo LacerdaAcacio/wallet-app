@@ -38,5 +38,4 @@ export const CardType = styled.Text<CardStyleProps>`
       : theme.colors.text.onSecondary};
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSizes.h5}px;
-  font-weight: bold;
 `;
