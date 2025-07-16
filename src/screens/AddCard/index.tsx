@@ -1,10 +1,24 @@
-// src/screens/AddCard/index.tsx
 import React from 'react';
-import { Platform, KeyboardAvoidingView } from 'react-native';
+import { Platform, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { ScreenContainer, Header, MainTitle, Button } from '@/components';
 import { ControlledInput } from '@/components/ControlledInput';
 import { useAddCardForm } from '@/features/cards/hooks/useAddCardForm';
 import * as S from './styles';
+import { useTheme } from 'styled-components/native';
+import { Ionicons } from '@expo/vector-icons';
+
+const CameraIcon = () => {
+  const theme = useTheme();
+  const handleCameraPress = () => {
+    Alert.alert('Funcionalidade Futura', 'A digitalização de cartões será implementada em breve.');
+  };
+
+  return (
+    <TouchableOpacity onPress={handleCameraPress}>
+      <Ionicons name="camera" size={24} color={theme.colors.primary} />
+    </TouchableOpacity>
+  );
+};
 
 const AddCardScreen: React.FC = () => {
   const { control, isValid, isSubmitting, submitForm } = useAddCardForm();
@@ -31,6 +45,7 @@ const AddCardScreen: React.FC = () => {
               mask="9999 9999 9999 9999"
               placeholder="0000 0000 0000 0000"
               keyboardType="numeric"
+              icon={<CameraIcon />}
             />
             <ControlledInput
               control={control}

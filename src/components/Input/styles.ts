@@ -3,6 +3,16 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { MaskedTextInput } from 'react-native-mask-text';
+import { css } from 'styled-components/native';
+
+const sharedInputStyles = css`
+  flex: 1;
+  height: 100%;
+  font-size: ${wp('4%')}px;
+  color: ${({ theme }) => theme.colors.black};
+  margin-left: ${wp('2%')}px;
+`;
 
 export const InputContainer = styled.View`
   width: ${wp('90%')}px;
@@ -33,11 +43,13 @@ export const TextInputContainer = styled.View.attrs(({ theme }) => ({
 export const TextInputStyled = styled.TextInput.attrs(({ theme }) => ({
   placeholderTextColor: theme.colors.text.placeholder,
 }))`
-  flex: 1;
-  height: 100%;
-  font-size: ${wp('4%')}px;
-  color: ${({ theme }) => theme.colors.black};
-  margin-left: ${wp('2%')}px;
+  ${sharedInputStyles}
+`;
+
+export const MaskedTextInputStyled = styled(MaskedTextInput).attrs(({ theme }) => ({
+  placeholderTextColor: theme.colors.text.placeholder,
+}))`
+  ${sharedInputStyles}
 `;
 
 export const ErrorText = styled.Text`
