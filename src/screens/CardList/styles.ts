@@ -7,7 +7,8 @@ export const Container = styled.View`
 `;
 
 export const ContentContainer = styled.View`
-  flex: 1;
+  height: 60%;
+  width: 100%;
   align-items: center;
 `;
 
@@ -16,16 +17,17 @@ export const ListWrapper = styled.View`
   flex: 1;
 `;
 
+export const ActionContainer = styled.View`
+  position: absolute;
+  top: 62%;
+  width: 100%;
+  align-items: center;
+`;
+
 export const ActionText = styled.Text`
   font-size: ${({ theme }) => theme.fontSizes.body}px;
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
-`;
-
-export const BottomButtonContainer = styled.View`
-  width: 100%;
-  padding-vertical: ${hp('3%')}px;
-  align-items: center;
 `;
 
 export const OverlayContainer = styled.View`
@@ -37,4 +39,14 @@ export const OverlayContainer = styled.View`
   justify-content: center;
   align-items: center;
   z-index: 50;
+`;
+
+export const PeekCard = styled.View`
+  position: absolute;
+  bottom: -${hp('20%')}px;
+  left: 0;
+  right: 0;
+  align-items: center;
+  opacity: 0.3;
+  z-index: -1;
 `;

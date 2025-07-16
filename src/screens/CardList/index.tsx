@@ -1,25 +1,26 @@
 import React from 'react';
-import { FlatList, Pressable, Alert } from 'react-native';
+import { FlatList, Pressable, Alert, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
-import { Button, Header } from '@/components';
-import { LoadingWallet } from '@/components/feedback/LoadingWallet';
+
+import { Button, Header, LoadingWallet } from '@/components';
 import { useCards } from '@/features/cards/hooks/useCards';
 import { AnimatedCard } from '@/features/cards/components/AnimatedCard';
+import { SCREENS } from '@/navigation';
 import { UI_STRINGS } from '@/constants';
+
 import { useCardSelection } from './hooks/useCardSelection';
 import { useCardListAnimation } from './hooks/useCardListAnimation';
 import * as S from './styles';
-import { SCREENS } from '@/navigation';
 
 const AddCardButton = React.memo(() => {
   const navigation = useNavigation();
   const theme = useTheme();
   const handleAddPress = () => navigation.navigate(SCREENS.ADD_CARD);
   return (
-    <Pressable onPress={handleAddPress}>
+    <Pressable onPress={handleAddPress} hitSlop={10}>
       <Ionicons name="add" size={30} color={theme.colors.primary} />
     </Pressable>
   );
@@ -40,6 +41,8 @@ const CardListScreen = () => {
   if (isLoadingCards) {
     return <LoadingWallet />;
   }
+
+  const ListFooter = () => <View style={{ height: 120 }} />;
 
   return (
     <S.Container>
@@ -64,7 +67,8 @@ const CardListScreen = () => {
                 />
               )}
               keyExtractor={item => item.id}
-              contentContainerStyle={{ alignItems: 'center', paddingTop: 20, paddingBottom: 20 }}
+              contentContainerStyle={{ alignItems: 'center', paddingTop: 20 }}
+              ListFooterComponent={ListFooter}
             />
           </S.ListWrapper>
         </Animated.View>
@@ -89,18 +93,24 @@ const CardListScreen = () => {
         )}
       </S.ContentContainer>
 
-      <S.BottomButtonContainer>
+      <S.ActionContainer>
         {selectedIndex !== null ? (
           <Button
             title={UI_STRINGS.payWithCardButton}
             onPress={() => Alert.alert(UI_STRINGS.action, UI_STRINGS.paymentButtonClicked)}
           />
         ) : (
-          <Pressable onPress={resetSelection}>
+          <Pressable onPress={() => handleCardPress((cards?.length ?? 1) - 1)}>
             <S.ActionText>{UI_STRINGS.useThisCardText}</S.ActionText>
           </Pressable>
         )}
-      </S.BottomButtonContainer>
+      </S.ActionContainer>
+
+      <S.PeekCard>
+        {cards && cards.length > 0 && (
+          <AnimatedCard card={cards[0]} index={0} isAnyCardSelected={true} />
+        )}
+      </S.PeekCard>
     </S.Container>
   );
 };
