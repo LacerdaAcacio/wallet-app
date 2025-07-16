@@ -1,26 +1,23 @@
 import React from 'react';
-import ScreenContainer from '../../components/ScreenContainer';
-import MainTitle from '../../components/MainTitle';
-import Button from '../../components/Button';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/types';
-
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+import { ScreenContainer, MainTitle, Button } from '@/components';
+import { useHome } from './hooks/useHome';
+import { UI_STRINGS } from '@/constants';
 
 const HomeScreen = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
-  const backgroundImage = require('../../assets/background.png');
+  const { handleNavigateToCardList, handleNavigateToAddCard } = useHome();
+  const backgroundImage = require('@/assets/background.png');
 
   return (
     <ScreenContainer backgroundImage={backgroundImage}>
-      <MainTitle>Wallet Test</MainTitle>
-      <Button title="meus cartões" onPress={() => navigation.navigate('CardList')} />
+      <MainTitle>{UI_STRINGS.appName}</MainTitle>
       <Button
-        title="cadastrar cartão"
-        testID="sd"
+        title={UI_STRINGS.myCardsButton}
+        onPress={handleNavigateToCardList}
+      />
+      <Button
+        title={UI_STRINGS.addCardTitle}
         variant="secondary"
-        onPress={() => navigation.navigate('AddCard')}
+        onPress={handleNavigateToAddCard}
       />
     </ScreenContainer>
   );

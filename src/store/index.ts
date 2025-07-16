@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cardFormReducer from '../features/cardForm/cardFormSlice';
+import { cardFormReducer } from '../features/cards/store/cardFormSlice';
 
 export const store = configureStore({
   reducer: {
