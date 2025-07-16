@@ -1,5 +1,5 @@
 import React from 'react';
-import { DefaultContainer, ImageContainer } from './styles';
+import { DefaultContainer, ImageContainer, ContentView } from './styles';
 import { ScreenContainerProps } from './types';
 
 const ScreenContainerComponent: React.FC<ScreenContainerProps> = ({
@@ -9,11 +9,15 @@ const ScreenContainerComponent: React.FC<ScreenContainerProps> = ({
   if (backgroundImage) {
     return (
       <ImageContainer source={backgroundImage} resizeMode="cover">
-        {children}
+        <ContentView>{children}</ContentView>
       </ImageContainer>
     );
   }
-  return <DefaultContainer>{children}</DefaultContainer>;
+  return (
+    <DefaultContainer>
+      <ContentView>{children}</ContentView>
+    </DefaultContainer>
+  );
 };
 
 export const ScreenContainer = React.memo(ScreenContainerComponent);
