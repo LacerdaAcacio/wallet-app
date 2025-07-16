@@ -1,80 +1,56 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, Pressable, Alert } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { useCards } from '../../hooks/useCards';
-import AnimatedCard from '../../components/AnimatedCard';
-import {
-  CardListContainer,
-  AddButton,
-  ActionText,
-  BottomButtonContainer,
-  ContentContainer,
-  ListWrapper,
-  OverlayContainer,
-} from './styles';
-import { useTheme } from 'styled-components/native';
+import Animated from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/types';
-import Button from '../../components/Button';
-import Header from '../../components/Header';
-import { LoadingWallet } from '../Loading/Wallet';
+import { useTheme } from 'styled-components/native';
+import { Button, Header } from '@/components';
+import { LoadingWallet } from '@/components/feedback/LoadingWallet';
+import { useCards } from '@/features/cards/hooks/useCards';
+import { AnimatedCard } from '@/features/cards/components/AnimatedCard';
+import { SCREENS, UI_STRINGS } from '@/constants';
+import { useCardSelection } from './hooks/useCardSelection';
+import { useCardListAnimation } from './hooks/useCardListAnimation';
+import * as S from './styles';
 
-type CardListNavigationProp = StackNavigationProp<RootStackParamList, 'CardList'>;
+const AddCardButton = React.memo(() => {
+  const navigation = useNavigation();
+  const theme = useTheme();
+  const handleAddPress = () => navigation.navigate(SCREENS.ADD_CARD);
+  return (
+    <Pressable onPress={handleAddPress}>
+      <Ionicons name="add" size={30} color={theme.colors.primary} />
+    </Pressable>
+  );
+});
 
 const CardListScreen = () => {
-  const navigation = useNavigation<CardListNavigationProp>();
   const { cards, isLoadingCards } = useCards();
-  const theme = useTheme();
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const {
+    selectedIndex,
+    focusedCard,
+    behindCard,
+    handleCardPress,
+    resetSelection,
+  } = useCardSelection(cards);
 
-  const listOpacity = useSharedValue(1);
-
-  const handleAddPress = () => navigation.navigate('AddCard');
-  const handleCardPress = (index: number) =>
-    setSelectedIndex(prevIndex => (prevIndex === index ? null : index));
-  const resetSelection = () => setSelectedIndex(null);
-
-  const handleUseThisCardPress = () => {
-    if (cards && cards.length > 0) {
-      setSelectedIndex(cards.length - 1);
-    }
-  };
-
-  const listAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: listOpacity.value,
-  }));
-
-  const AddCardButton = (
-    <AddButton onPress={handleAddPress}>
-      <Ionicons name="add" size={30} color={theme.colors.primaryButton} />
-    </AddButton>
-  );
-
-  useFocusEffect(
-    React.useCallback(() => {
-      listOpacity.value = withTiming(selectedIndex !== null ? 0 : 1);
-    }, [selectedIndex]),
-  );
-
-  const focusedCard = selectedIndex !== null ? cards?.[selectedIndex] : null;
-  const behindCard =
-    selectedIndex !== null && cards && selectedIndex < cards.length - 1
-      ? cards[selectedIndex + 1]
-      : null;
+  const listAnimatedStyle = useCardListAnimation(selectedIndex !== null);
 
   if (isLoadingCards) {
     return <LoadingWallet />;
   }
 
   return (
-    <CardListContainer>
-      <Header title="Wallet Test" variant="wallet" rightComponent={AddCardButton} />
+    <S.Container>
+      <Header
+        title={UI_STRINGS.appName}
+        variant="wallet"
+        rightComponent={<AddCardButton />}
+      />
 
-      <ContentContainer>
+      <S.ContentContainer>
         <Animated.View style={[{ width: '100%', flex: 1 }, listAnimatedStyle]}>
-          <ListWrapper>
+          <S.ListWrapper>
             <FlatList
               data={cards}
               renderItem={({ item, index }) => (
@@ -89,11 +65,11 @@ const CardListScreen = () => {
               keyExtractor={item => item.id}
               contentContainerStyle={{ alignItems: 'center', paddingTop: 20, paddingBottom: 20 }}
             />
-          </ListWrapper>
+          </S.ListWrapper>
         </Animated.View>
 
         {selectedIndex !== null && focusedCard && (
-          <OverlayContainer>
+          <S.OverlayContainer>
             {behindCard && (
               <AnimatedCard
                 card={behindCard}
@@ -108,23 +84,23 @@ const CardListScreen = () => {
               isFocused={true}
               onPress={resetSelection}
             />
-          </OverlayContainer>
+          </S.OverlayContainer>
         )}
-      </ContentContainer>
+      </S.ContentContainer>
 
-      <BottomButtonContainer>
+      <S.BottomButtonContainer>
         {selectedIndex !== null ? (
           <Button
-            title="Pagar com este cartão"
-            onPress={() => Alert.alert('Ação', 'Botão de pagamento clicado!')}
+            title={UI_STRINGS.payWithCardButton}
+            onPress={() => Alert.alert(UI_STRINGS.action, UI_STRINGS.paymentButtonClicked)}
           />
         ) : (
-          <Pressable onPress={handleUseThisCardPress}>
-            <ActionText>usar este cartão</ActionText>
+          <Pressable onPress={resetSelection}>
+            <S.ActionText>{UI_STRINGS.useThisCardText}</S.ActionText>
           </Pressable>
         )}
-      </BottomButtonContainer>
-    </CardListContainer>
+      </S.BottomButtonContainer>
+    </S.Container>
   );
 };
 

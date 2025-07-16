@@ -1,32 +1,42 @@
 import React from 'react';
-import { createStackNavigator, StackCardStyleInterpolator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  CardStyleInterpolationProps,
+} from '@react-navigation/stack';
+import HomeScreen from '@/screens/Home';
+import AddCardScreen from '@/screens/AddCard';
+import AddCardSuccessScreen from '@/screens/AddCardSuccess';
+import CardListScreen from '@/screens/CardList';
 import { RootStackParamList } from './types';
-import HomeScreen from '../screens/Home';
-import AddCardScreen from '../screens/AddCard';
-import AddCardSuccessScreen from '../screens/AddCardSuccess';
-import CardListScreen from '../screens/CardList';
+import { SCREENS } from './constants';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const stackNavigatorOptions = {
-  headerShown: false,
-  cardStyleInterpolator: (({ current: { progress } }: { current: { progress: any } }) => ({
-    cardStyle: {
-      opacity: progress,
-      overflow: 'visible',
-    },
-  })) as StackCardStyleInterpolator,
-};
+const forFade: (props: CardStyleInterpolationProps) => any = ({
+  current,
+}) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
 
-const AppNavigator = () => {
+const AppNavigatorComponent = () => {
   return (
-    <Stack.Navigator screenOptions={stackNavigatorOptions}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="AddCard" component={AddCardScreen} />
-      <Stack.Screen name="AddCardSuccess" component={AddCardSuccessScreen} />
-      <Stack.Screen name="CardList" component={CardListScreen} />
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: forFade,
+      }}
+    >
+      <Stack.Screen name={SCREENS.HOME} component={HomeScreen} />
+      <Stack.Screen name={SCREENS.ADD_CARD} component={AddCardScreen} />
+      <Stack.Screen
+        name={SCREENS.ADD_CARD_SUCCESS}
+        component={AddCardSuccessScreen}
+      />
+      <Stack.Screen name={SCREENS.CARD_LIST} component={CardListScreen} />
     </Stack.Navigator>
   );
 };
 
-export default AppNavigator;
+export const AppNavigator = React.memo(AppNavigatorComponent);

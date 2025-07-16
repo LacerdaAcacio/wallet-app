@@ -1,9 +1,36 @@
-import styled, { css } from 'styled-components/native';
-import { Text } from 'react-native';
+import styled from 'styled-components/native';
 import {
-  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+
+export const ScreenWrapper = styled.View`
+  flex: 1;
+  width: 100%;
+  align-items: center;
+`;
+
+export const FormScrollView = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+})``;
+
+export const HeaderContainer = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+`;
+
+export const FormContainer = styled.View`
+  align-items: center;
+  width: 100%;
+`;
 
 export const FormRow = styled.View`
   flex-direction: row;
@@ -13,23 +40,4 @@ export const FormRow = styled.View`
 
 export const HalfWidthInputContainer = styled.View`
   width: ${wp('43%')}px;
-`;
-export const sharedInputStyle = ({ theme }: { theme: any }) => css`
-  flex: 1;
-  height: 100%;
-  font-size: ${theme.fontSizes.body};
-  color: ${theme.colors.black};
-  margin-left: ${wp('2%')}px;
-`;
-
-export const FormRowErrorContainer = styled.View`
-  width: ${wp('90%')}px;
-  align-items: flex-start;
-  margin-top: -${hp('1%')}px;
-  min-height: ${hp('3%')}px;
-`;
-
-export const RowErrorText = styled(Text)`
-  color: ${({ theme }) => theme.colors.error};
-  font-size: ${({ theme }) => theme.fontSizes.small};
 `;
