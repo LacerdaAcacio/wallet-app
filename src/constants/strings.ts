@@ -1,0 +1,18 @@
+export const UI_STRINGS = {
+  addCardTitle: 'Cadastrar Cartão',
+  addCardSuccess: 'Cartão cadastrado com sucesso!',
+  cardListTitle: 'Meus Cartões',
+  appName: 'Wallet App',
+  genericError: 'Ocorreu um erro, tente novamente.',
+  addCardErrorTitle: 'Erro ao adicionar cartão',
+  addCardErrorMessage: 'Não foi possível adicionar o cartão. Por favor, tente novamente.',
+  advanceButton: 'avançar',
+  cardPreviewName: 'Nome:',
+  cardPreviewNumber: 'Número:',
+  cardPreviewExpiry: 'Validade:',
+  payWithCardButton: 'Pagar com este cartão',
+  useThisCardText: 'usar este cartão',
+  action: 'Ação',
+  paymentButtonClicked: 'Botão de pagamento clicado!',
+  myCardsButton: 'meus cartões',
+};

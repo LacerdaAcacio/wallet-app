@@ -1,14 +1,9 @@
-import styled from 'styled-components/native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import React from 'react';
+import { TitleText } from './styles';
+import { MainTitleProps } from './types';
 
-const MainTitle = styled.Text`
-  color: ${({ theme }) => theme.colors.white};
-  font-size: ${wp('10%')}px;
-  text-align: center;
-  margin-bottom: ${hp('5%')}px;
-`;
+const MainTitleComponent: React.FC<MainTitleProps> = ({ children, ...rest }) => {
+  return <TitleText {...rest}>{children}</TitleText>;
+};
 
-export default MainTitle;
+export const MainTitle = React.memo(MainTitleComponent);

@@ -1,24 +1,29 @@
 import React from 'react';
-import { InputContainer, Label, TextInputContainer, ErrorText } from './styles';
+import {
+  InputContainer,
+  Label,
+  TextInputContainer,
+  ErrorText,
+  TextInputStyled,
+} from './styles';
+import { InputProps } from './types';
 
-interface InputWrapperProps {
-  label: string;
-  error?: string;
-  icon?: React.ReactNode;
-  children: React.ReactNode;
-}
-
-const InputWrapper: React.FC<InputWrapperProps> = ({ label, error, icon, children }) => {
+const InputComponent: React.FC<InputProps> = ({
+  label,
+  error,
+  icon,
+  ...rest
+}) => {
   return (
     <InputContainer>
       <Label>{label}</Label>
       <TextInputContainer>
         {icon}
-        {children}
+        <TextInputStyled {...rest} />
       </TextInputContainer>
-      {error && <ErrorText>{error}</ErrorText>}
+      {!!error && <ErrorText>{error}</ErrorText>}
     </InputContainer>
   );
 };
 
-export default InputWrapper;
+export const Input = React.memo(InputComponent);

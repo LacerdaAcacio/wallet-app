@@ -15,27 +15,29 @@ export const Label = styled.Text`
   margin-bottom: ${hp('1%')}px;
 `;
 
-export const TextInputStyled = styled.TextInput`
-  flex: 1;
-  height: 100%;
-  font-size: ${wp('4%')}px;
-  color: ${({ theme }) => theme.colors.black};
-  margin-left: ${wp('2%')}px;
-`;
-
-export const TextInputContainer = styled.View`
+export const TextInputContainer = styled.View.attrs(({ theme }) => ({
+  shadowColor: theme.colors.black,
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.15,
+  shadowRadius: 4,
+  elevation: 3,
+}))`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.radii.small};
   height: ${hp('6.5%')}px;
   padding-horizontal: ${wp('4%')}px;
   flex-direction: row;
   align-items: center;
+`;
 
-  shadow-color: #000;
-  shadow-offset: 0px 1px;
-  shadow-opacity: 0.15;
-  shadow-radius: 4px;
-  elevation: 3;
+export const TextInputStyled = styled.TextInput.attrs(({ theme }) => ({
+  placeholderTextColor: theme.colors.text.placeholder,
+}))`
+  flex: 1;
+  height: 100%;
+  font-size: ${wp('4%')}px;
+  color: ${({ theme }) => theme.colors.black};
+  margin-left: ${wp('2%')}px;
 `;
 
 export const ErrorText = styled.Text`

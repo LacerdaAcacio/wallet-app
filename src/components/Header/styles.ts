@@ -1,32 +1,28 @@
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import styled from 'styled-components/native';
+import { HeaderStyleProps } from './types';
 
-const shadowStyles = {
-  elevation: 8,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.1,
-  shadowRadius: 5,
-};
-interface SectionProps {
-  variant: 'default' | 'wallet';
-}
-
-export const Container = styled.View`
+export const Container = styled.View<{ paddingTop: number }>`
   background-color: transparent;
+  padding-top: ${({ paddingTop }) => paddingTop}px;
 `;
 
-export const TopSection = styled.View.attrs<SectionProps>(props => ({
-  style: props.variant === 'wallet' ? shadowStyles : {},
-}))<SectionProps>`
+export const TopSection = styled.View.attrs<HeaderStyleProps>(({ theme, variant }) => ({
+  ...(variant === 'wallet' && {
+    shadowColor: theme.colors.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 8,
+  }),
+}))<HeaderStyleProps>`
   background-color: ${({ theme, variant }) =>
-    variant === 'wallet' ? theme.colors.lightGray : 'transparent'};
+    variant === 'wallet' ? theme.colors.ui.lightGray : 'transparent'};
 
-  padding-top: ${getStatusBarHeight()}px;
   padding-bottom: ${hp('2%')}px;
   padding-horizontal: ${wp('5%')}px;
   flex-direction: row;
@@ -34,18 +30,14 @@ export const TopSection = styled.View.attrs<SectionProps>(props => ({
   justify-content: space-between;
   z-index: 10;
 `;
-interface HeaderTitleProps {
-  variant: 'default' | 'wallet';
-}
 
-export const HeaderTitle = styled.Text<HeaderTitleProps>`
+export const HeaderTitle = styled.Text<HeaderStyleProps>`
   flex: 1;
-  font-size: ${wp('7.5%')}px;
   text-align: center;
-
-  color: ${({ theme, variant }) => {
-    return variant === 'wallet' ? theme.colors.backgroundDark : theme.colors.primaryButton;
-  }};
+  font-weight: bold;
+  font-size: ${wp('7.5%')}px;
+  color: ${({ theme, variant }) =>
+    variant === 'wallet' ? theme.colors.background : theme.colors.primary};
 `;
 
 export const BackButton = styled.TouchableOpacity`
@@ -53,31 +45,24 @@ export const BackButton = styled.TouchableOpacity`
 `;
 
 export const HeaderPlaceholder = styled.View`
-  width: ${wp('3%')}px;
+  width: ${wp('10%')}px;
 `;
 
 export const SubHeaderSection = styled.View`
   width: 100%;
-  padding-vertical: 20px;
+  padding-vertical: ${({ theme }) => theme.spacing.medium}px;
   padding-horizontal: ${wp('5%')}px;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-
-  margin-top: -30px;
+  background-color: ${({ theme }) => theme.colors.ui.lightGray};
+  border-bottom-left-radius: ${({ theme }) =>
+    theme.radii.extraLarge};
+  border-bottom-right-radius: ${({ theme }) =>
+    theme.radii.extraLarge};
+  margin-top: -${({ theme }) => theme.radii.extraLarge};
   padding-top: 40px;
 `;
 
 export const SubHeaderTitle = styled.Text`
-  font-size: ${({ theme }) => theme.fontSizes.h3};
-  color: ${({ theme }) => theme.colors.primaryButton};
-`;
-
-export const AddButton = styled.TouchableOpacity`
-  position: absolute;
-  right: ${wp('5%')}px;
-  padding: 8px;
+  font-size: ${({ theme }) => theme.fontSizes.h3}px;
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: bold;
 `;
