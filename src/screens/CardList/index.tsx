@@ -8,10 +8,11 @@ import { Button, Header } from '@/components';
 import { LoadingWallet } from '@/components/feedback/LoadingWallet';
 import { useCards } from '@/features/cards/hooks/useCards';
 import { AnimatedCard } from '@/features/cards/components/AnimatedCard';
-import { SCREENS, UI_STRINGS } from '@/constants';
+import { UI_STRINGS } from '@/constants';
 import { useCardSelection } from './hooks/useCardSelection';
 import { useCardListAnimation } from './hooks/useCardListAnimation';
 import * as S from './styles';
+import { SCREENS } from '@/navigation';
 
 const AddCardButton = React.memo(() => {
   const navigation = useNavigation();
